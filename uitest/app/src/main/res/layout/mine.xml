@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+//layout:我的
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="back"
+        android:id="@+id/backBtn"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:onClick="onClick"/>
+
+    <!-- 可监听点击事件-->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/image"
+        android:src="@drawable/ic_launcher"
+        android:clickable="true"
+        android:layout_toRightOf="@+id/backBtn"
+        android:onClick="onClick"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:text="昵称"
+        android:id="@+id/name"
+        android:layout_toRightOf="@+id/image" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我看过的"
+        android:id="@+id/seenBtn"
+        android:layout_below="@+id/backBtn"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="60dip"
+        android:onClick="onClick"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我评论的"
+        android:id="@+id/commentedBtn"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/seenBtn"
+        android:layout_marginTop="20dip"
+        android:onClick="onClick"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我收藏的"
+        android:id="@+id/storedBtn"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/commentedBtn"
+        android:layout_marginTop="20dip"
+        android:onClick="onClick"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我发布的"
+        android:id="@+id/publishedBtn"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/storedBtn"
+        android:layout_marginTop="20dip"
+        android:onClick="onClick"/>
+</RelativeLayout>

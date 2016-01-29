@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+<RelativeLayout
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentTop="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/titleLayout"
+    android:background="#ed4255">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="名字"
+        android:id="@+id/nameBtn"
+        android:background="#ed4255"
+        android:textColor="#ffffffff"
+        android:textSize="20dp"
+        android:onClick="onClick"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="攻略推荐"
+        android:id="@+id/recommendBtn"
+        android:textColor="#ffffffff"
+        android:textSize="20dp"
+        android:background="#ed4255"
+        android:onClick="onClick"
+        android:layout_toRightOf="@+id/nameBtn"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="个人表白"
+        android:id="@+id/myExpressBtn"
+        android:background="#ed4255"
+        android:onClick="onClick"
+        android:textColor="#ffffffff"
+        android:textSize="20dp"
+        android:layout_toRightOf="@+id/recommendBtn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="消息"
+        android:id="@+id/messageBtn"
+        android:textColor="#ffffffff"
+        android:background="#ed4255"
+        android:textSize="20dp"
+        android:onClick="onClick"
+        android:layout_toRightOf="@+id/myExpressBtn" />
+
+</RelativeLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/homeFrameContain"
+        android:layout_below="@+id/titleLayout"
+        android:layout_above="@+id/homeBtn">
+    </FrameLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="首页"
+        android:id="@+id/homeBtn"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:onClick="onClick"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我要表白"
+        android:id="@+id/expressBtn"
+        android:onClick="onClick"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/homeBtn"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我的"
+        android:id="@+id/mineBtn"
+        android:onClick="onClick"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/expressBtn" />
+
+
+
+</RelativeLayout>
