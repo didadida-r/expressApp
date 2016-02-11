@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/BACKGROUND_GRAY">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/shareLayout"
+        android:layout_alignParentBottom="true"
+        android:background="#ed6a76">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="分享至"
+            android:textSize="11sp"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="30dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/weixingIv"
+            android:layout_marginLeft="48dp"
+            android:src="@mipmap/expression_weixing_iv"
+            style="@style/ExpressionShareBtnStyle"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/qzoneIv"
+            android:layout_toRightOf="@+id/weixingIv"
+            android:src="@mipmap/expression_qzone_iv"
+            style="@style/ExpressionShareBtnStyle"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/weiboIv"
+            android:layout_toRightOf="@+id/qzoneIv"
+            android:src="@mipmap/expression_weibo_iv"
+            style="@style/ExpressionShareBtnStyle"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/qqIv"
+            android:layout_toRightOf="@+id/weiboIv"
+            android:src="@mipmap/expression_qq_iv"
+            style="@style/ExpressionShareBtnStyle"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

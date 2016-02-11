@@ -7,28 +7,25 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:id="@+id/titleLayout"
-        android:background="#ed4255">
+        android:background="#ed6a76">
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="back"
             android:id="@+id/backBtn"
-            android:background="#ed4255"
-            android:textColor="#ffffffff"
-            android:textSize="20dp"
+            android:background="@mipmap/expression_back_btn"
             android:onClick="onClick"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true" />
+            android:layout_marginLeft="25dp"
+            android:layout_centerVertical="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/text"
             android:text="To kiki"
-            android:textSize="20dp"
+            android:textSize="17dp"
             android:textColor="#ffffffff"
             android:src="@drawable/ic_launcher"
             android:layout_centerVertical="true"
@@ -38,24 +35,30 @@
     <!-- seekBarLayout -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="131dp"
         android:id="@+id/seekBarLayout"
         android:layout_below="@+id/titleLayout"
-        android:background="@drawable/ic_launcher">
+        android:background="@mipmap/expression_sample"
+        >
 
         <SeekBar
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:id="@+id/seekBar"
             android:max="100"
-            android:layout_marginTop="30dp"
-            android:layout_toRightOf="@+id/playBtn"/>
-        <Button
+            android:layout_toRightOf="@+id/playBtn"
+            android:progressDrawable="@mipmap/expression_progress_sb"
+            android:thumb="@mipmap/expression_play_sb"
+            android:maxHeight="0.5dp"
+            android:layout_marginTop="110dp"/>
+
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/playBtn"
-            android:background="@drawable/ic_launcher"
-            android:layout_alignParentLeft="true"
+            android:background="@mipmap/expression_play_btn"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="113dp"
             android:onClick="onClick"/>
     </RelativeLayout>
 
@@ -67,7 +70,7 @@
         android:scrollbars="none"
         android:fillViewport="true"
         android:layout_below="@+id/seekBarLayout"
-        android:layout_above="@+id/commentBtn">
+        android:layout_above="@+id/bottomLayout">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -95,18 +98,42 @@
                 android:orientation="horizontal"
                 android:id="@+id/commLayout"
                 android:layout_below="@+id/expressText">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/commImage"
                     android:src="@drawable/ic_launcher"
                     android:layout_weight="1"/>
-                <TextView
+
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/commText"
-                    android:text="挺不错的"
-                    android:layout_weight="5"/>
+                    android:id="@+id/imageText"
+                    android:layout_weight="5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/commName"
+                        android:text="CoCo"
+                        android:layout_alignParentTop="true"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/commText"
+                        android:text="挺不错的"
+                        android:layout_below="@+id/commName"/>
+
+                </RelativeLayout>
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/likeCheck"
+                    android:layout_weight="1"/>
+
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -118,40 +145,49 @@
 
     </ScrollView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="评论"
-        android:id="@+id/commentBtn"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:onClick="onClick"/>
+    <!-- bottomLayout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:id="@+id/bottomLayout"
+        android:layout_alignParentBottom="true">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="收藏"
-        android:id="@+id/storeBtn"
-        android:onClick="onClick"
-        android:layout_toRightOf="@+id/commentBtn"
-        android:layout_alignParentBottom="true"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/commentBtn"
+            android:drawableLeft="@mipmap/expression_comment_btn"
+            android:text="20"
+            style="@style/ExpressionButtonStyle"
+            android:layout_weight="1"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="点赞"
-        android:id="@+id/likeBtn"
-        android:onClick="onClick"
-        android:layout_toRightOf="@+id/storeBtn"
-        android:layout_alignParentBottom="true"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/storeBtn"
+            android:drawableLeft="@mipmap/expression_store_btn"
+            android:text="20"
+            style="@style/ExpressionButtonStyle"
+            android:layout_weight="1"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="分享"
-        android:id="@+id/shareBtn"
-        android:onClick="onClick"
-        android:layout_toRightOf="@+id/likeBtn"
-        android:layout_alignParentBottom="true"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/likeBtn"
+            android:drawableLeft="@mipmap/expression_like_btn"
+            android:text="20"
+            style="@style/ExpressionButtonStyle"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/shareBtn"
+            android:drawableLeft="@mipmap/expression_share_btn"
+            android:text="20"
+            style="@style/ExpressionButtonStyle"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

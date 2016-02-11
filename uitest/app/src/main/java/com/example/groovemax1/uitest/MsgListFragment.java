@@ -17,24 +17,48 @@ import java.util.Map;
 /**
  * Created by GROOVEMAX1 on 2016/1/26.
  */
-public class MsgUserListFragment extends ListFragment {
+public class MsgListFragment extends ListFragment {
+    public static final String ARGUMENT_STATE = "argument_state";
+
+    private String state;
+    private int listLayout;
+    private String[] from;
+    private int[] to;
+
     //建立fragment视图
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.msg_user_listview, container, false);
+        return inflater.inflate(R.layout.listview, container, false);
     }
 
     //建立fragment对象
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        final String[] from = new String[] {"user", "message"};
-        final int[] to = new int[] {R.id.text1, R.id.text2};
-
         super.onCreate(savedInstanceState);
+
+        //接收数据
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            state = bundle.getString(ARGUMENT_STATE);
+            switch (state){
+                case "msgUserFragment":
+                    listLayout = R.layout.msg_listview_user_sample;
+                    from = new String[]{"title", "message"};
+                    to = new int[]{R.id.titleTv, R.id.contentTv};
+                    break;
+                case "msgSysFragment":
+                    listLayout = R.layout.msg_listview_sys_sample;
+                    from = new String[]{"title", "message"};
+                    to = new int[]{R.id.titleTv, R.id.contentTv};
+                    break;
+                default:
+                    break;
+            }
+        }
         // 建立SimpleAdapter，将from和to对应起来
         SimpleAdapter adapter = new SimpleAdapter(
                 this.getActivity(), getSimpleData(),
-                R.layout.msg_user_listview_sample, from, to);
+                listLayout, from, to);
         this.setListAdapter(adapter);
     }
 
@@ -51,8 +75,8 @@ public class MsgUserListFragment extends ListFragment {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for(int i = 0;i<10;i++){
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("user","msg"+i);
-            map.put("message","评论"+i);
+            map.put("title","sys"+i);
+            map.put("message","message"+i);
             list.add(map);
         }
         return list;

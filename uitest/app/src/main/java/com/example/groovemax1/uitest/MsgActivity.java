@@ -3,28 +3,30 @@ package com.example.groovemax1.uitest;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 /**
  * Created by GROOVEMAX1 on 2016/1/25.
+ * 消息
+ * 传入的应该只是state来判别什么样的listFragment，到里面直接根据state添加layout等
  */
-//消息
+
 //使用fragment需要将最小api版本改为11
 public class MsgActivity extends Activity implements View.OnClickListener{
+    public static final String ARGUMENT_STATE = "argument_state";
+    private Bundle bundle;
 
-    private MsgUserListFragment msgUserFragment;
-    private MsgSysListFragment msgSysFragment;
+    private MsgListFragment msgFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.msg_layout);
         initUi();
-
     }
+
     private void initUi(){
         //设置默认的fragment
         setDefaultFragment();
@@ -33,8 +35,14 @@ public class MsgActivity extends Activity implements View.OnClickListener{
     private void setDefaultFragment(){
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        msgUserFragment = new MsgUserListFragment();
-        transaction.replace(R.id.msgFrameContain, msgUserFragment);
+
+        bundle = new Bundle();
+        bundle.putString(ARGUMENT_STATE, "msgUserFragment");
+        msgFragment = new MsgListFragment();
+        //传入bundle
+        msgFragment.setArguments(bundle);
+
+        transaction.replace(R.id.msgFrameContain, msgFragment);
         transaction.commit();
     }
 
@@ -45,17 +53,26 @@ public class MsgActivity extends Activity implements View.OnClickListener{
         switch (view.getId()){
             case R.id.backBtn:
                 MsgActivity.this.finish();
-                startActivity(new Intent(MsgActivity.this, HomeActivity.class));
                 break;
             case R.id.userMsgBtn:
-                if(msgUserFragment == null)
-                    msgUserFragment = new MsgUserListFragment();
-                transaction.replace(R.id.msgFrameContain, msgUserFragment);
+                //将需要从activity传入到fragment的数据封装到bundle中
+                bundle = new Bundle();
+                bundle.putString(ARGUMENT_STATE, "msgUserFragment");
+                msgFragment = new MsgListFragment();
+                //传入bundle
+                msgFragment.setArguments(bundle);
+
+                transaction.replace(R.id.msgFrameContain, msgFragment);
                 break;
             case R.id.sysMsgBtn:
-                if(msgSysFragment == null)
-                    msgSysFragment = new MsgSysListFragment();
-                transaction.replace(R.id.msgFrameContain, msgSysFragment);
+                //将需要从activity传入到fragment的数据封装到bundle中
+                bundle = new Bundle();
+                bundle.putString(ARGUMENT_STATE, "msgSysFragment");
+                msgFragment = new MsgListFragment();
+                //传入bundle
+                msgFragment.setArguments(bundle);
+
+                transaction.replace(R.id.msgFrameContain, msgFragment);
                 break;
             default:
                 break;

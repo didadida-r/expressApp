@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +25,7 @@ public class HomeListFragment extends ListFragment{
 
     private HomeActivity.HomeTouchListener homeTouchListener;
     private int i;
+
     public interface HomeListFragmentClickListener{
         void onHomeListFragmentClick(int i);
     }
@@ -33,6 +34,7 @@ public class HomeListFragment extends ListFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.home_listview, container, false);
+
     }
 
     //建立fragment对象,并绑定数据适配器
@@ -43,7 +45,7 @@ public class HomeListFragment extends ListFragment{
         final int[] to = new int[]{R.id.imageLeft, R.id.textLeft,
                 R.id.imageRight, R.id.textRight};
         SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), getData(),
-                R.layout.home_listview_sample1, from, to);
+                R.layout.home_listview_sample, from, to);
         this.setListAdapter(simpleAdapter);
         register();
     }

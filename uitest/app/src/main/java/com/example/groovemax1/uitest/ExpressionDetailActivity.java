@@ -1,12 +1,23 @@
 package com.example.groovemax1.uitest;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.PopupWindow;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.example.groovemax1.uitest.tools.Player;
 
@@ -15,10 +26,13 @@ import com.example.groovemax1.uitest.tools.Player;
  * 详细表白
  */
 public class ExpressionDetailActivity extends Activity implements View.OnClickListener{
-    private Button playBtn;
     private SeekBar seekBar;
+    private ImageButton playBtn;
     private Player player;
     private int playFlag = -1;
+
+    private RelativeLayout shareLayout;
+    private RelativeLayout expressionlayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +47,6 @@ public class ExpressionDetailActivity extends Activity implements View.OnClickLi
             case R.id.backBtn:
                 player.stop();
                 ExpressionDetailActivity.this.finish();
-                startActivity(new Intent(ExpressionDetailActivity.this, HomeActivity.class));
                 break;
             case R.id.commentBtn:
                 break;
@@ -42,6 +55,7 @@ public class ExpressionDetailActivity extends Activity implements View.OnClickLi
             case R.id.likeBtn:
                 break;
             case R.id.shareBtn:
+                showPopupWindow();
                 break;
             //播放
             case R.id.playBtn:
@@ -52,13 +66,10 @@ public class ExpressionDetailActivity extends Activity implements View.OnClickLi
                     playFlag++;
                 }else {
                     playFlag = ++playFlag % 2;
-                    if(playFlag == 1){
+                    if(playFlag == 1)
                         player.pause();
-                        playBtn.setText("play");
-                    }else {
+                    else
                         player.play();
-                        playBtn.setText("pause");
-                    }
                 }
                 break;
             default:
@@ -67,12 +78,13 @@ public class ExpressionDetailActivity extends Activity implements View.OnClickLi
     }
 
     private void initUi(){
-        playBtn = (Button) findViewById(R.id.playBtn);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        expressionlayout = (RelativeLayout) inflater.inflate(R.layout.expression_detail, null);
+        shareLayout = (RelativeLayout) findViewById(R.id.shareLayout);
+
+        playBtn = (ImageButton) findViewById(R.id.playBtn);
         seekBar = (SeekBar) findViewById(R.id.seekBar);
         player = new Player(seekBar);
-        playBtn.setWidth(8);
-        playBtn.setHeight(8);
-
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress;   //播放进度
             @Override
@@ -93,4 +105,27 @@ public class ExpressionDetailActivity extends Activity implements View.OnClickLi
             }
         });
     }
+
+    //分享页面
+    private void showPopupWindow(){
+        View content = LayoutInflater.from(this).inflate(R.layout.share, null);
+        View view = findViewById(R.id.titleLayout);
+
+        final PopupWindow popupWindow = new PopupWindow(content,
+                ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setTouchable(true);
+        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Toast.makeText(getApplication(), "popupwindow", Toast.LENGTH_SHORT).show();
+                return false;
+                // 这里如果返回true的话，touch事件将被拦截
+                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+            }
+        });
+        // 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
+        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_launcher));
+        popupWindow.showAsDropDown(view);
+    }
+
 }

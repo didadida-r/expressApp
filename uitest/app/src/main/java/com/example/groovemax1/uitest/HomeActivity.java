@@ -3,17 +3,13 @@ package com.example.groovemax1.uitest;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,6 +22,7 @@ import java.util.ArrayList;
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener, HomeListFragment.HomeListFragmentClickListener{
 
     private HomeListFragment homeListFragment;
+    private ImageView homeIv;
 
     public interface HomeTouchListener{
         public void onTouchEvent(MotionEvent event);
@@ -59,21 +56,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
         initUi();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     //初始化UI
     public void initUi(){
         setDefaultFragment();
+        homeIv = (ImageView) findViewById(R.id.homeIv);
+        homeIv.setImageResource(R.mipmap.home_home_selete_iv);
+
     }
 
     //初始化fragment
@@ -92,7 +83,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, "left", Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(this, "right", Toast.LENGTH_SHORT).show();
-        HomeActivity.this.finish();
+
         startActivity(new Intent(this, ExpressionDetailActivity.class));
     }
 
@@ -101,29 +92,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         switch (v.getId()){
-            //我要表白
-            case R.id.expressBtn:
-                HomeActivity.this.finish();
-                startActivity((new Intent(HomeActivity.this, ExpressActivity.class)));
+            case R.id.mineIv:
+                startActivity((new Intent(HomeActivity.this, MineActivity.class)));
                 break;
-            //个人表白
-            case R.id.myExpressBtn:
+            case R.id.expressIv:
+                startActivity(new Intent(HomeActivity.this, ExpressActivity.class));
                 break;
-            //首页
-            case R.id.homeBtn:
-                if(homeListFragment == null)
-                    homeListFragment = new HomeListFragment();
-                transaction.replace(R.id.homeFrameContain, homeListFragment);
-                break;
-            //消息
             case R.id.messageBtn:
-                HomeActivity.this.finish();
                 startActivity((new Intent(HomeActivity.this, MsgActivity.class)));
-                break;
-            //我的
-            case R.id.mineBtn:
-                HomeActivity.this.finish();
-                startActivity(new Intent(HomeActivity.this, mineActivity.class));
                 break;
             default:
                 break;

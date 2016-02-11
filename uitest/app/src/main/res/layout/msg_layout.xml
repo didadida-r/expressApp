@@ -1,36 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
-//消息页面总的layout
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="返回"
-        android:id="@+id/backBtn"
+
+    <!-- msg layout-->
+
+    <!-- titleLayout -->
+    <RelativeLayout
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:onClick="onClick"/>
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:id="@+id/titleLayout"
+        android:background="#ea6a76">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="用户消息"
-        android:id="@+id/userMsgBtn"
-        android:layout_toRightOf="@+id/backBtn"
-        android:onClick="onClick"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/backBtn"
+            android:background="@mipmap/expression_back_btn"
+            android:onClick="onClick"
+            android:layout_marginLeft="25dp"
+            android:layout_centerVertical="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="系统消息"
-        android:id="@+id/sysMsgBtn"
-        android:layout_toRightOf="@+id/userMsgBtn"
-        android:onClick="onClick"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="用户消息"
+                android:id="@+id/userMsgBtn"
+                style="@style/MsgButtonStyle"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="系统消息"
+                android:id="@+id/sysMsgBtn"
+                style="@style/MsgButtonStyle"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/userMsgBtn"/>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
 
     <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" android:layout_below="@+id/sysMsgBtn">
+    android:orientation="vertical" android:layout_below="@+id/titleLayout">
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

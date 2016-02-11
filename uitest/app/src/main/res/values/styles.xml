@@ -8,4 +8,37 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextStyle">
+        <item name="android:textColor">#fefefe</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="HomeButtonStyle">
+        <item name="android:textColor">#fefefe</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:onClick">onClick</item>
+        <item name="android:background">#ea6a76</item>
+    </style>
+
+    <style name="ExpressionButtonStyle">
+        <item name="android:background">#00000000</item>
+        <item name="android:drawablePadding">-20dp</item>
+        <item name="android:textColor">#bfbfbf</item>
+        <item name="android:textSize">17dp</item>
+        <item name="android:onClick">onClick</item>
+    </style>
+
+    <style name="MsgButtonStyle">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:onClick">onClick</item>
+        <item name="android:background">#ea6a76</item>
+    </style>
+
+    <style name="ExpressionShareBtnStyle">
+        <item name="android:layout_marginLeft">27dp</item>
+        <item name="android:layout_marginTop">29dp</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
 </resources>

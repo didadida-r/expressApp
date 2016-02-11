@@ -7,30 +7,25 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:id="@+id/titleLayout"
-        android:background="#ed4255">
+        android:background="#ed6a76">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="back"
+            android:layout_width="12dp"
+            android:layout_height="20dp"
             android:id="@+id/backBtn"
-            android:background="#ed4255"
-            android:textColor="#ffffffff"
-            android:textSize="20dp"
-            style="?android:attr/buttonStyleSmall"
+            android:background="@mipmap/express_back_btn"
             android:onClick="onClick"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_marginLeft="22dp"
+            android:layout_centerVertical="true"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/text"
             android:text="我要表白"
-            android:textSize="20dp"
+            android:textSize="17dp"
             android:textColor="#ffffffff"
             android:src="@drawable/ic_launcher"
             android:layout_centerVertical="true"
@@ -44,27 +39,32 @@
         android:ems="10"
         android:id="@+id/titleText"
         android:hint="点击输入标题"
+        android:textSize="14dp"
+        android:textColor="#ffbfbfbf"
         android:singleLine="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="60dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="25dp"
+        android:background="@mipmap/express_title_et"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/titleLayout"/>
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher"
-        android:layout_marginTop="120dp"
+        android:layout_width="226dp"
+        android:layout_height="125dp"
+        android:src="@mipmap/express_add_iv"
+        android:layout_marginTop="22dp"
         android:layout_centerHorizontal="true"
+        android:layout_below="@+id/titleText"
         android:onClick="onClick"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:layout_width="226dp"
+        android:layout_height="125dp"
         android:id="@+id/expressLayout"
-        android:background="@drawable/ic_launcher"
+        android:background="@mipmap/express_text_et"
         android:layout_below="@+id/image"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="18dp"
         android:layout_centerHorizontal="true">
 
         <EditText
@@ -72,19 +72,36 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:id="@+id/expressText"
+            android:lines="5"
+            android:textColor="#ffbfbfbf"
+            android:textSize="14sp"
             android:hint="点击输入文字"
             android:clickable="true"
-            android:lines="5" />
+            android:gravity="center"
+            android:layout_centerInParent="true"/>
 
-    </LinearLayout>
+    </RelativeLayout>
+
+    <SeekBar
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/seekBar"
+        android:max="100"
+        android:progressDrawable="@mipmap/expression_progress_sb"
+        android:thumb="@mipmap/expression_play_sb"
+        android:maxHeight="0.5dp"
+        android:layout_marginLeft="91dp"
+        android:layout_marginRight="91dp"
+        android:layout_marginTop="6dp"
+        android:layout_below="@+id/expressLayout"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="录音"
         android:id="@+id/recordBtn"
-        android:layout_below="@+id/expressLayout"
-        android:layout_marginTop="70dp"
+        android:layout_below="@+id/seekBar"
+        android:layout_marginTop="6dp"
         android:layout_alignLeft="@+id/expressLayout"
         android:onClick="onClick"/>
 
@@ -93,8 +110,8 @@
         android:layout_height="wrap_content"
         android:text="重录"
         android:id="@+id/repeatBtn"
-        android:layout_below="@+id/expressLayout"
-        android:layout_marginTop="70dp"
+        android:layout_below="@+id/seekBar"
+        android:layout_marginTop="6dp"
         android:layout_alignRight="@+id/expressLayout"
         android:onClick="onClick"/>
 
@@ -104,7 +121,7 @@
         android:text="匿名发布"
         android:id="@+id/checkBox"
         android:layout_below="@+id/recordBtn"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:layout_alignLeft="@+id/recordBtn"
         android:checked="false" />
 
@@ -112,10 +129,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="发布"
+        android:textColor="#030100"
         android:id="@+id/publishBtn"
         android:layout_below="@+id/checkBox"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="6dp"
         android:layout_centerHorizontal="true"
-        android:onClick="onClick"/>
+        android:background="#ed6a76"
+        android:onClick="onClick" />
 
 </RelativeLayout>

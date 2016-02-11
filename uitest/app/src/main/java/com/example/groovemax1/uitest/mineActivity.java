@@ -5,32 +5,32 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Comment;
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 
 /**
  * Created by GROOVEMAX1 on 2016/1/27.
  * 我的
  */
 
-public class mineActivity extends Activity implements View.OnClickListener{
+public class MineActivity extends Activity implements View.OnClickListener{
     private static final int NONE = 0;
     private static final int PHOTO_ZOOM = 2; // 缩放
     private static final int PHOTO_RESULT = 3;// 结果
     private static final String IMAGE_UNSPECIFIED = "image/*";
+    private String[] content = {"我看过的", "我评论的", "我收藏的", "我发布的"};
 
     private ImageView image;
     private TextView name;
+    private ListView listView;
+    private ImageView mineIv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,16 @@ public class mineActivity extends Activity implements View.OnClickListener{
     private void initUi(){
         image = (ImageView) findViewById(R.id.image);
         name = (TextView) findViewById(R.id.name);
+        mineIv = (ImageView) findViewById(R.id.mineIv);
+        listView = (ListView) findViewById(R.id.myListView);
+        listView.setAdapter(new ArrayAdapter<String>(this, R.layout.mine_listview_sample, R.id.listTextView, content));
+        mineIv.setImageResource(R.mipmap.home_mine_selete_iv);
+        onListViewClick();
+    }
+
+    //选中处理
+    private void onListViewClick(){
+
     }
 
     @Override
@@ -49,21 +59,19 @@ public class mineActivity extends Activity implements View.OnClickListener{
         switch (v.getId()){
             //待定：用什么实现后面的页面
             case R.id.backBtn:
-                mineActivity.this.finish();
-                startActivity(new Intent(mineActivity.this, HomeActivity.class));
-                break;
-            case R.id.seenBtn:
-                break;
-            case R.id.commentedBtn:
-                break;
-            case R.id.storedBtn:
-                break;
-            case R.id.publishedBtn:
+                MineActivity.this.finish();
                 break;
             case R.id.image:
                 Intent intent = new Intent(Intent.ACTION_PICK, null);
                 intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_UNSPECIFIED);
                 startActivityForResult(intent, PHOTO_ZOOM);Toast.makeText(this, "this", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.homeIv:
+                finish();
+                break;
+            case R.id.expressIv:
+                finish();
+                startActivity(new Intent(this,ExpressActivity.class));
                 break;
             default:
                 break;
