@@ -100,41 +100,36 @@
         android:layout_height="wrap_content"
         android:text="录音"
         android:id="@+id/recordBtn"
-        android:layout_below="@+id/seekBar"
-        android:layout_marginTop="6dp"
         android:layout_alignLeft="@+id/expressLayout"
-        android:onClick="onClick"/>
+        style="@style/ExpressButtonStyle"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="重录"
         android:id="@+id/repeatBtn"
-        android:layout_below="@+id/seekBar"
-        android:layout_marginTop="6dp"
         android:layout_alignRight="@+id/expressLayout"
-        android:onClick="onClick"/>
+        style="@style/ExpressButtonStyle"/>
 
+    <!-- style="@style/ExpressCheckStyle"暂时没有解决checkbox自定义 -->
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="匿名发布"
         android:id="@+id/checkBox"
+        android:text="匿名表白"
         android:layout_below="@+id/recordBtn"
         android:layout_marginTop="6dp"
         android:layout_alignLeft="@+id/recordBtn"
-        android:checked="false" />
+        android:checked="true"/>
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="发布"
-        android:textColor="#030100"
-        android:id="@+id/publishBtn"
+        android:id="@+id/publishIb"
+        android:background="@drawable/express_publish_btn"
         android:layout_below="@+id/checkBox"
         android:layout_marginTop="6dp"
         android:layout_centerHorizontal="true"
-        android:background="#ed6a76"
-        android:onClick="onClick" />
+        android:onClick="onClick"/>
 
 </RelativeLayout>

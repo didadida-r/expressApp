@@ -41,4 +41,26 @@
         <item name="android:layout_centerVertical">true</item>
     </style>
 
+    <style name="ExpressButtonStyle">
+        <item name="android:textColor">@color/expressColor</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:onClick">onClick</item>
+        <item name="android:background">@mipmap/express_frame_btn</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:layout_below">@+id/seekBar</item>
+    </style>
+
+    <!-- checkbox -->
+    <style name="ExpressCheckStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/express_check_cb</item>
+    </style>
+
+    <!-- style for dialog 声明对话框是浮动的，而且使用自定义的背景和标题视图-->
+    <style name="MyDialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@null</item>
+
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
 </resources>

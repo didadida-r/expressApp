@@ -2,16 +2,20 @@ package com.example.groovemax1.uitest;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.example.groovemax1.uitest.tools.MyDialog;
 import com.example.groovemax1.uitest.tools.RecordClass;
 
 
@@ -24,11 +28,14 @@ public class ExpressActivity extends Activity implements View.OnClickListener{
     private RecordClass recordClass;
 
     private Button recordBtn;
-    private AlertDialog jumpDialog;
-    private AlertDialog recordDialog;
+    private Dialog jumpDialog = null;
+    private Dialog recordDialog = null;
+    private MyDialog.Builder jumpBuilder;
+    private MyDialog.Builder recordBuilder;
     private CheckBox checkBox;
     private EditText titleText;
     private EditText expressText;
+
     private Handler handler;
     private int jumpTime = 3;
     private int recordTime = 0;
@@ -45,7 +52,7 @@ public class ExpressActivity extends Activity implements View.OnClickListener{
                 switch (msg.what) {
                     case 0003:
                         if (--jumpTime > 0) {
-                            jumpDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText("确定（"+ jumpTime +"s)");
+                            jumpBuilder.getPositiveButton().setText("确定（" + jumpTime + "s)");
                             Message message = handler.obtainMessage(0003);
                             //延迟1s发送消息,自循环计时
                             handler.sendMessageDelayed(message, 1000);
@@ -59,12 +66,11 @@ public class ExpressActivity extends Activity implements View.OnClickListener{
                     //录音时长超过5分钟，直接进入停止录音进入试听
                     case 0500:
                         if(++recordTime > 5){
-                            Log.v("debug", "new AlertDialog");
-                            recordDialog = new AlertDialog.Builder(ExpressActivity.this)
+                            recordBuilder = new MyDialog.Builder(ExpressActivity.this)
                                     .setTitle("提示")
                                     .setMessage("录音时间请勿超过5分钟")
-                                    .setPositiveButton("确定", null)
-                                    .create();
+                                    .setPositiveButton("确定", null);
+                            recordDialog = recordBuilder.create();
                             recordDialog.show();
                             Log.v("debug", "stopRecord()");
                             recordClass.stopRecord();
@@ -123,19 +129,19 @@ public class ExpressActivity extends Activity implements View.OnClickListener{
                 break;
 
             //发布,自定义监听事件实现倒计时
-            case R.id.publishBtn:
+            case R.id.publishIb:
                 if(recordClass.playState == 1)
                      recordClass.stopPlay();
-                jumpDialog = new AlertDialog.Builder(this)
+                jumpBuilder = new MyDialog.Builder(this)
                         .setTitle("发布成功")
-                        .setMessage("即将跳转至主页面")
-                        .setPositiveButton("确定", null)
-                        .create();
+                        .setMessage("即将跳转至主页面...")
+                        .setPositiveButton("确定", null);
+                jumpDialog = jumpBuilder.create();
                 jumpDialog.show();
-                jumpDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                jumpBuilder.getPositiveButton().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        jumpDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText("确定（"+ jumpTime +"s)");
+                        jumpBuilder.getPositiveButton().setText("确定（"+ jumpTime +"s)");
                         Message message = handler.obtainMessage(0003);
                         handler.sendMessageDelayed(message, 1000);
                     }

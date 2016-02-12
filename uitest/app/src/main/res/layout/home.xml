@@ -38,14 +38,14 @@
             style="@style/HomeButtonStyle"
             android:layout_toRightOf="@+id/recommendBtn" />
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="消息"
             android:id="@+id/messageBtn"
             style="@style/HomeButtonStyle"
-            android:layout_marginRight="23dp"
-            android:layout_toRightOf="@+id/myExpressBtn" />
+            android:background="@mipmap/home_msg_iv"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="320dp" />
 
     </RelativeLayout>
 
