@@ -13,7 +13,7 @@ import com.example.groovemax1.uitest.R;
 
 /**
  * 文件名：
- * 描述：
+ * 描述：自定义布局dialog
  * 作者：
  * 时间：
  */

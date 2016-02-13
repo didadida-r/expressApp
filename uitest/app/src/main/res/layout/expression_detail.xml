@@ -92,54 +92,10 @@
                 android:layout_alignParentStart="true" />
 
             <!-- comment -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <include layout="@layout/expression_detail_comment"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/commLayout"
-                android:layout_below="@+id/expressText">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/commImage"
-                    android:src="@drawable/ic_launcher"
-                    android:layout_weight="1"/>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageText"
-                    android:layout_weight="5">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/commName"
-                        android:text="CoCo"
-                        android:layout_alignParentTop="true"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/commText"
-                        android:text="挺不错的"
-                        android:layout_below="@+id/commName"/>
-
-                </RelativeLayout>
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/likeCheck"
-                    android:layout_weight="1"/>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/commLikeBtn"
-                    android:layout_weight="1"/>
-            </LinearLayout>
+                android:layout_below="@+id/expressText"/>
 
         </RelativeLayout>
 

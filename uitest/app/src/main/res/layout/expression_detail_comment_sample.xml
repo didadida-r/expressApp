@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:layout_centerVertical="true">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/commImage"
+        android:src="@drawable/ic_launcher"
+        android:layout_marginLeft="26dp"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageText"
+        android:layout_marginLeft="80dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/commName"
+            android:layout_marginTop="5dp"
+            android:textSize="10sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/commText"
+            android:textSize="12sp"
+            android:layout_below="@+id/commName"/>
+
+    </RelativeLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/likeBtn"
+        android:layout_marginLeft="310dp"
+        android:background="@mipmap/expression_comment_like_ib"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/likeNum"
+        android:text="123"
+        android:textSize="10sp"
+        android:textColor="#959595"
+        android:layout_marginLeft="325dp"
+        android:layout_marginTop="5dp"/>
+
+
+</RelativeLayout>
