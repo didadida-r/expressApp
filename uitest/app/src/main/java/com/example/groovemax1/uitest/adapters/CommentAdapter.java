@@ -1,4 +1,4 @@
-package com.example.groovemax1.uitest.tools;
+package com.example.groovemax1.uitest.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -56,7 +56,7 @@ public class CommentAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null){
-            convertView = layoutInflater.inflate(R.layout.expression_detail_comment_sample, null);
+            convertView = layoutInflater.inflate(R.layout.expression_detail_comment_item, null);
             commImage = (ImageView) convertView.findViewById(R.id.commImage);
             commName = (TextView) convertView.findViewById(R.id.commName);
             commText = (TextView) convertView.findViewById(R.id.commText);

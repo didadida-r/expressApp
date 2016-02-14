@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent" >
+    android:layout_width="match_parent" android:layout_height="match_parent" android:background="@mipmap/login_background">
 
     <RelativeLayout
         android:layout_width="240dp"
         android:layout_height="200dp"
         android:layout_marginLeft="72dp"
         android:layout_marginTop="285dp"
-        android:id="@+id/loginLayout">
+        android:id="@+id/loginLayout"
+        android:background="@drawable/login_circle_background">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -52,21 +53,28 @@
                 android:layout_marginLeft="22dp"/>
         </FrameLayout>
 
-        <CheckBox
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/rememberCode"
-            android:layout_marginLeft="152dp"
-            android:layout_below="@+id/codeLayout"/>
+            android:id="@+id/rememberLayout"
+            android:layout_below="@+id/codeLayout">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="记住密码"
-            android:textSize="10sp"
-            android:layout_below="@+id/codeLayout"
-            android:layout_toEndOf="@+id/rememberCode"
-            android:layout_toRightOf="@+id/rememberCode"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rememberCode"
+                android:layout_marginLeft="152dp"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="记住密码"
+                android:textSize="10sp"
+                android:layout_toRightOf="@+id/rememberCode"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
 
         <Button
             android:layout_width="match_parent"
@@ -76,7 +84,7 @@
             android:textColor="#ffffff"
             android:textSize="18sp"
             android:gravity="center"
-            android:layout_below="@+id/rememberCode"
+            android:layout_below="@+id/rememberLayout"
             android:background="#ea6a76" />
 
     </RelativeLayout>
@@ -86,20 +94,22 @@
         android:layout_height="wrap_content"
         android:text="还没有账号？点击"
         android:id="@+id/text"
-        android:textSize="10sp"
+        android:textSize="12sp"
+        android:textColor="#a3a3a3"
         android:layout_below="@+id/loginLayout"
         android:layout_marginTop="12dp"
-        android:layout_marginLeft="115dp"/>
+        android:layout_marginLeft="130dp"/>
 
     <!-- 注册 -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/text"
-        android:layout_below="@+id/loginLayout"
-        android:layout_marginTop="10dp"
         android:textSize="12sp"
         android:text="注册"
-        android:onClick="onClick"/>
+        android:textColor="#ffffff"
+        android:onClick="onClick"
+        android:layout_alignTop="@+id/text"
+        android:layout_toRightOf="@+id/text"
+        android:layout_toEndOf="@+id/text" />
 
 </RelativeLayout>

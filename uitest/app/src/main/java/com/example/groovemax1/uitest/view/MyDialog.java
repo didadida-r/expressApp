@@ -1,4 +1,4 @@
-package com.example.groovemax1.uitest.tools;
+package com.example.groovemax1.uitest.view;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -121,7 +121,7 @@ public class MyDialog extends Dialog{
                     R.style.MyDialog);
 
             // instantiate the dialog layout
-            View layout = inflater.inflate(R.layout.mydialog, null);
+            View layout = inflater.inflate(R.layout.express_mydialog, null);
             dialog.addContentView(layout, new RadioGroup.LayoutParams(
                     RadioGroup.LayoutParams.FILL_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT));
 

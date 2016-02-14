@@ -3,7 +3,6 @@ package com.example.groovemax1.uitest;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -13,10 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -24,7 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-import com.example.groovemax1.uitest.tools.CommentAdapter;
+import com.example.groovemax1.uitest.adapters.CommentAdapter;
 import com.example.groovemax1.uitest.tools.Player;
 
 import java.util.ArrayList;

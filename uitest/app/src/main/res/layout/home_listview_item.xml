@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:stretchColumns="0,1" android:background="@color/WHITE" android:descendantFocusability="blocksDescendants">
+
+    <!--定义一个表格行-->
+    <TableRow>
+        <!--添加两张图片-->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageLeft"
+            android:src="@drawable/ic_launcher" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageRight"
+            android:src="@drawable/ic_launcher"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="文字"
+            android:textSize="12sp"
+            android:id="@+id/nameLeft"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="34dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="文字"
+            android:textSize="12sp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/nameRight"
+            android:layout_marginLeft="34dp"/>
+    </TableRow>
+
+    <TableRow>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="117dp">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/likeBtnLeft"
+                android:src="@mipmap/expression_like_btn"
+                android:background="@color/WHITE"
+                android:layout_centerVertical="true"
+                android:clickable="false"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="123"
+                android:textSize="12sp"
+                android:id="@+id/numLeft"
+                android:layout_toRightOf="@+id/likeBtnLeft"
+                android:layout_marginLeft="5dp"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="117dp">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/likeBtnRight"
+                android:src="@mipmap/expression_like_btn"
+                android:background="@color/WHITE"
+                android:layout_centerVertical="true"
+                android:clickable="false"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="123"
+                android:textSize="12sp"
+                android:id="@+id/numRight"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/likeBtnRight"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+    </TableRow>
+
+</TableLayout>

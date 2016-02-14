@@ -10,11 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.groovemax1.uitest.tools.MyDialog;
+import com.example.groovemax1.uitest.view.MyDialog;
 
 import java.util.ArrayList;
 
@@ -97,18 +96,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         switch (v.getId()){
             case R.id.homeIv:
-                Dialog myDialog = null;
-                MyDialog.Builder dialog = new MyDialog.Builder(this);
-                dialog.setTitle("提示")
-                        .setMessage("录音时间不要超过五分钟")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                myDialog = dialog.create();
-                myDialog.show();
+                startActivity(new Intent(this, testActivity.class));
                 break;
             case R.id.mineIv:
                 startActivity((new Intent(HomeActivity.this, MineActivity.class)));

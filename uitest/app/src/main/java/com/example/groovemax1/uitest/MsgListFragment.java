@@ -42,12 +42,12 @@ public class MsgListFragment extends ListFragment {
             state = bundle.getString(ARGUMENT_STATE);
             switch (state){
                 case "msgUserFragment":
-                    listLayout = R.layout.msg_listview_user_sample;
+                    listLayout = R.layout.msg_listview_user_item;
                     from = new String[]{"title", "message"};
                     to = new int[]{R.id.titleTv, R.id.contentTv};
                     break;
                 case "msgSysFragment":
-                    listLayout = R.layout.msg_listview_sys_sample;
+                    listLayout = R.layout.msg_listview_sys_item;
                     from = new String[]{"title", "message"};
                     to = new int[]{R.id.titleTv, R.id.contentTv};
                     break;

@@ -9,8 +9,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,12 +47,9 @@ public class HomeListFragment extends ListFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final String[] from = new String[]{"image1", "text1", "image2", "text2"};
-        final int[] to = new int[]{R.id.imageLeft, R.id.textLeft,
-                R.id.imageRight, R.id.textRight};
-        SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), getData(),
-                R.layout.home_listview_sample, from, to);
-        this.setListAdapter(simpleAdapter);
+
+        HomeListAdapter homeListAdapter = new HomeListAdapter(getActivity());
+        this.setListAdapter(homeListAdapter);
         register();
     }
 
@@ -59,6 +62,7 @@ public class HomeListFragment extends ListFragment{
         }
     }
 
+    /*
     //获取数据
     private List<Map<String, Object>> getData(){
         List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
@@ -72,6 +76,7 @@ public class HomeListFragment extends ListFragment{
         }
         return list;
     }
+     */
 
     //获取屏幕的宽度
     private int getScreenWidth(Context context){
@@ -95,6 +100,79 @@ public class HomeListFragment extends ListFragment{
 
         //在该Fragment的构造函数中注册mTouchListener的回调
         ((HomeActivity)this.getActivity()).registerHomeTouchListener(homeTouchListener);
+    }
+
+    private static class HomeListAdapter extends BaseAdapter {
+
+        private LayoutInflater inflater;
+        private Context context;
+
+        private static final String[] IMAGE_URLS = {"http://img3.imgtn.bdimg.com/it/u=3086269874,568125913&fm=206&gp=0.jpg"
+                ,"http://a.hiphotos.baidu.com/image/h%3D200/sign=febfa19b4ded2e73e3e9812cb700a16d/f7246b600c338744233d6163560fd9f9d72aa031.jpg"
+                ,"http://e.hiphotos.baidu.com/image/h%3D200/sign=55d8a67b514e9258b93481eeac83d1d1/b7fd5266d0160924f7e3ec04d30735fae7cd34ee.jpg"
+                ,"http://img3.imgtn.bdimg.com/it/u=3841157212,2135341815&fm=206&gp=0.jpg"
+                ,"http://h.hiphotos.baidu.com/image/h%3D300/sign=ece3e0add658ccbf04bcb33a29d8bcd4/aa18972bd40735fab9f007a699510fb30f2408a8.jpg"
+                ,"http://h.hiphotos.baidu.com/image/h%3D300/sign=2de3af29758b4710d12ffbccf3cec3b2/b64543a98226cffc8955e8babe014a90f603eabf.jpg"};
+        private DisplayImageOptions options;
+
+        HomeListAdapter(Context context){
+            this.context = context;
+            inflater = LayoutInflater.from(context);
+
+            options = new DisplayImageOptions.Builder().showImageOnLoading(R.mipmap.ic_stub)
+                    .showImageForEmptyUri(R.mipmap.ic_empty)
+                    .showImageOnFail(R.mipmap.ic_error)
+                    .cacheInMemory(true)
+                    .cacheOnDisk(true)
+                    .considerExifParams(true)
+                    .build();
+        }
+
+        @Override
+        public int getCount() {
+            return IMAGE_URLS.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return position;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            final ViewHolder holder;
+            if (convertView == null) {
+                view = inflater.inflate(R.layout.home_listview_item, parent, false);
+                holder = new ViewHolder();
+                holder.nameLeft = (TextView) view.findViewById(R.id.nameLeft);
+                holder.nameRight = (TextView) view.findViewById(R.id.nameRight);
+                holder.imageLeft = (ImageView) view.findViewById(R.id.imageLeft);
+                holder.imageRight = (ImageView) view.findViewById(R.id.imageRight);
+                view.setTag(holder);
+            } else {
+                holder = (ViewHolder) view.getTag();
+            }
+
+            holder.nameLeft.setText("表白" + position );
+            holder.nameRight.setText("表白" + position );
+            ImageLoader.getInstance().displayImage(IMAGE_URLS[position], holder.imageLeft, options);
+            ImageLoader.getInstance().displayImage(IMAGE_URLS[position], holder.imageRight, options);
+
+            return view;
+        }
+
+    }
+    static class ViewHolder {
+        TextView nameLeft;
+        TextView nameRight;
+        ImageView imageLeft;
+        ImageView imageRight;
     }
 
 }
