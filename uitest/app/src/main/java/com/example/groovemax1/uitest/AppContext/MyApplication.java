@@ -28,7 +28,7 @@ public class MyApplication extends Application {
         return myAppliction;
     }
 
-    public boolean IsLogin(){
+    public boolean isLogin(){
         return isLogin;
     }
 

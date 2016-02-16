@@ -28,6 +28,8 @@
         <activity android:name=".ExpressActivity"/>
         <activity android:name=".MineActivity"/>
         <activity android:name=".ExpressionDetailActivity"/>
+        <activity android:name=".LoginActivity"/>
+        <activity android:name=".RegisterActivity"/>
         <activity android:name=".testActivity"/>
     </application>
 

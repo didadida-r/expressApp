@@ -6,7 +6,7 @@
     <color name="MyRed">#ed6a76</color>
     <color name="WHITE">#ffffff</color>
     <color name="GRAY">#a6a6a9</color>
-    <color name="BACKGROUND_GRAY">#00f3f3f3</color>
+    <color name="BACKGROUND_GRAY">#80f3f3f3</color>
     <color name="expressColor">#bfbfbf</color>
     <color name="expression_comment_background">#f2f2f2</color>
 </resources>
