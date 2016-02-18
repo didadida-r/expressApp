@@ -3,6 +3,7 @@ package com.example.groovemax1.uitest.AppContext;
 import android.app.Application;
 import android.content.Context;
 
+import com.example.groovemax1.uitest.net.ThreadPoolManager;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -21,6 +22,7 @@ import java.io.File;
 public class MyApplication extends Application {
 
     private static MyApplication myAppliction = null;
+    private static ThreadPoolManager threadPoolManager;
     private static DisplayImageOptions options;
     private boolean isLogin;
 
@@ -42,6 +44,13 @@ public class MyApplication extends Application {
         myAppliction = this;
 
         initImageLoader(getApplicationContext());
+
+        threadPoolManager = new ThreadPoolManager(0, 5);
+        threadPoolManager.start();
+    }
+
+    public static ThreadPoolManager getThreadPoolManager(){
+        return threadPoolManager;
     }
 
     public static void initImageLoader(Context context){

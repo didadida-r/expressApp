@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class Constant {
 
-    public static ArrayList<String> IMAGE_URLS = new ArrayList<>();
+    public static ArrayList<String[]> IMAGE_URLS = new ArrayList<>();
+
+    public static int LIST_NUM;
 
 }

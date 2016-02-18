@@ -31,6 +31,7 @@ import java.util.Locale;
 
 /**
  * Created by GROOVEMAX1 on 2016/1/26.
+ * 首页、首页推荐、我的均可重用这个类，只是数据不一样
  */
 
 public class HomeListFragment extends ListFragment implements AbsListView.OnScrollListener{
@@ -468,7 +469,7 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
      * 下拉刷新监听接口
      */
     public interface OnRefreshListener {
-        public void onRefresh();
+        void onRefresh();
     }
 
     /**
@@ -542,7 +543,7 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
     }
 
     /**
-     *getListView的操作必须在这里完成
+     *getListView的操作必须在onActivityCreated完成
      */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -555,6 +556,7 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
 
     private HomeActivity.HomeTouchListener homeTouchListener;
     private int i;
+    private HomeListAdapter homeListAdapter;
 
     public interface HomeListFragmentClickListener{
         void onHomeListFragmentClick(int i);
@@ -571,18 +573,29 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        HomeListAdapter homeListAdapter = new HomeListAdapter(getActivity());
+        homeListAdapter = new HomeListAdapter(getActivity());
         this.setListAdapter(homeListAdapter);
         register();
     }
 
+    /**
+     * fragment与activity通信
+     * 如果宿主activity实现了该接口,则调用相应的接口函数
+     */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        //fragment与activity通信
-        //如果宿主activity实现了该接口,则调用相应的接口函数
         if(getActivity() instanceof HomeListFragmentClickListener){
             ((HomeListFragmentClickListener) getActivity()).onHomeListFragmentClick(i);
         }
+    }
+
+    /**
+     *在销毁fragment时取消注册事件
+     */
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((HomeActivity)this.getActivity()).unRegisterHomeListener(homeTouchListener);
     }
 
     /*
@@ -600,6 +613,10 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
         return list;
     }
      */
+
+    public HomeListAdapter getHomeListAdapter(){
+        return homeListAdapter;
+    }
 
     //获取屏幕的宽度
     private int getScreenWidth(Context context){
@@ -728,7 +745,7 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
         ((HomeActivity)this.getActivity()).registerHomeTouchListener(homeTouchListener);
     }
 
-    public static class HomeListAdapter extends BaseAdapter {
+    protected static class HomeListAdapter extends BaseAdapter {
 
         private LayoutInflater inflater;
         private Context context;
@@ -774,16 +791,20 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
                 holder.nameRight = (TextView) view.findViewById(R.id.nameRight);
                 holder.imageLeft = (ImageView) view.findViewById(R.id.imageLeft);
                 holder.imageRight = (ImageView) view.findViewById(R.id.imageRight);
+                holder.numLeft = (TextView) view.findViewById(R.id.numLeft);
+                holder.numRight = (TextView) view.findViewById(R.id.numRight);
+
                 view.setTag(holder);
             } else {
                 holder = (ViewHolder) view.getTag();
             }
-            Log.v(TAG, "Constant.IMAGE_URLS.get(position)" + Constant.IMAGE_URLS.get(position) +"\n");
-            Log.v(TAG, "position" + position +"\n");
-            holder.nameLeft.setText("表白" + position);
-            holder.nameRight.setText("表白" + position );
-            ImageLoader.getInstance().displayImage(Constant.IMAGE_URLS.get(position), holder.imageLeft, options);
-            ImageLoader.getInstance().displayImage(Constant.IMAGE_URLS.get(position), holder.imageRight, options);
+
+            ImageLoader.getInstance().displayImage(Constant.IMAGE_URLS.get(position)[0], holder.imageLeft, options);
+            ImageLoader.getInstance().displayImage(Constant.IMAGE_URLS.get(position)[1], holder.imageRight, options);
+            holder.nameLeft.setText(Constant.IMAGE_URLS.get(position)[2]);
+            holder.nameRight.setText(Constant.IMAGE_URLS.get(position)[3]);
+            holder.numLeft.setText(Constant.IMAGE_URLS.get(position)[4]);
+            holder.numRight.setText(Constant.IMAGE_URLS.get(position)[5]);
 
             return view;
         }
@@ -793,6 +814,8 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
     static class ViewHolder {
         TextView nameLeft;
         TextView nameRight;
+        TextView numLeft;
+        TextView numRight;
         ImageView imageLeft;
         ImageView imageRight;
     }
