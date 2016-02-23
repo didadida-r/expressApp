@@ -17,7 +17,6 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -34,7 +33,9 @@ import java.util.Locale;
  * 首页、首页推荐、我的均可重用这个类，只是数据不一样
  */
 
-public class HomeListFragment extends ListFragment implements AbsListView.OnScrollListener{
+public class MyListFragment extends ListFragment implements AbsListView.OnScrollListener{
+
+    // =================================== 上拉刷新、下拉加载 ==================================
 
     /**  显示格式化日期模板   */
     private final static String DATE_FORMAT_STR = "yyyy年MM月dd日 HH:mm";
@@ -65,7 +66,7 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
      * <p> 1:加载中  */
     private int mEndState;
 
-    // ================================= 功能设置Flag ================================
+    // ====================== 功能设置Flag ======================
 
     /**  可以加载更多？   */
     private boolean mCanLoadMore = false;
@@ -112,7 +113,7 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
         mIsMoveToFirstItemAfterRefresh = pIsMoveToFirstItemAfterRefresh;
     }
 
-    // ============================================================================
+    // ====================== 功能设置Flag ====================== //
 
     private LayoutInflater mInflater;
 
@@ -476,7 +477,7 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
      * 加载更多监听接口
      */
     public interface OnLoadMoreListener {
-        public void onLoadMore();
+        void onLoadMore();
     }
 
     public void setOnRefreshListener(OnRefreshListener pRefreshListener) {
@@ -543,7 +544,117 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
     }
 
     /**
-     *getListView的操作必须在onActivityCreated完成
+     * 上拉刷新和下拉加载事件的处理
+     */
+    public void onFreshEvent(MotionEvent event){
+
+        if(mCanLoadMore && mEndState == ENDINT_LOADING){
+            // 如果存在加载更多功能，并且当前正在加载更多，默认不允许下拉刷新，必须加载完毕后才能使用。
+            return;
+        }
+        if (mCanRefresh) {
+            switch (event.getAction()) {
+
+                case MotionEvent.ACTION_DOWN:
+                    if (mFirstItemIndex == 0 && !mIsRecored) {
+                        mIsRecored = true;
+                        mStartY = (int) event.getY();
+                    }
+                    break;
+
+                case MotionEvent.ACTION_UP:
+
+                    if (mHeadState != REFRESHING && mHeadState != LOADING) {
+                        if (mHeadState == DONE) {
+
+                        }
+                        if (mHeadState == PULL_TO_REFRESH) {
+                            mHeadState = DONE;
+                            changeHeaderViewByState();
+                        }
+                        if (mHeadState == RELEASE_TO_REFRESH) {
+                            mHeadState = REFRESHING;
+                            changeHeaderViewByState();
+                            onRefresh();
+                        }
+                    }
+
+                    mIsRecored = false;
+                    mIsBack = false;
+
+                    break;
+
+                case MotionEvent.ACTION_MOVE:
+                    int tempY = (int) event.getY();
+
+                    if (!mIsRecored && mFirstItemIndex == 0) {
+                        mIsRecored = true;
+                        mStartY = tempY;
+                    }
+
+                    if (mHeadState != REFRESHING && mIsRecored && mHeadState != LOADING) {
+
+                        // 保证在设置padding的过程中，当前的位置一直是在head，
+                        // 否则如果当列表超出屏幕的话，当在上推的时候，列表会同时进行滚动
+                        // 可以松手去刷新了
+                        if (mHeadState == RELEASE_TO_REFRESH) {
+
+                            setSelection(0);
+
+                            // 往上推了，推到了屏幕足够掩盖head的程度，但是还没有推到全部掩盖的地步
+                            if (((tempY - mStartY) / RATIO < mHeadViewHeight)
+                                    && (tempY - mStartY) > 0) {
+                                mHeadState = PULL_TO_REFRESH;
+                                changeHeaderViewByState();
+                            }
+                            // 一下子推到顶了
+                            else if (tempY - mStartY <= 0) {
+                                mHeadState = DONE;
+                                changeHeaderViewByState();
+                            }
+                            // 往下拉了，或者还没有上推到屏幕顶部掩盖head的地步
+                        }
+                        // 还没有到达显示松开刷新的时候,DONE或者是PULL_To_REFRESH状态
+                        if (mHeadState == PULL_TO_REFRESH) {
+
+                            setSelection(0);
+
+                            // 下拉到可以进入RELEASE_TO_REFRESH的状态
+                            if ((tempY - mStartY) / RATIO >= mHeadViewHeight) {
+                                mHeadState = RELEASE_TO_REFRESH;
+                                mIsBack = true;
+                                changeHeaderViewByState();
+                            } else if (tempY - mStartY <= 0) {
+                                mHeadState = DONE;
+                                changeHeaderViewByState();
+                            }
+                        }
+
+                        if (mHeadState == DONE) {
+                            if (tempY - mStartY > 0) {
+                                mHeadState = PULL_TO_REFRESH;
+                                changeHeaderViewByState();
+                            }
+                        }
+
+                        if (mHeadState == PULL_TO_REFRESH) {
+                            mHeadView.setPadding(0, -1 * mHeadViewHeight
+                                    + (tempY - mStartY) / RATIO, 0, 0);
+
+                        }
+
+                        if (mHeadState == RELEASE_TO_REFRESH) {
+                            mHeadView.setPadding(0, (tempY - mStartY) / RATIO
+                                    - mHeadViewHeight, 0, 0);
+                        }
+                    }
+                    break;
+            }
+        }
+       }
+
+    /**
+     *getListView中添加头部和底部布局的操作必须在onActivityCreated完成
      */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -552,29 +663,38 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
         init();
     }
 
-    //----------------------------------------------------------------------//
+    // =================================== 上拉刷新、下拉加载 ================================== //
 
+    // HomeActivity的监听事件接口
     private HomeActivity.HomeTouchListener homeTouchListener;
-    private int i;
-    private HomeListAdapter homeListAdapter;
 
-    public interface HomeListFragmentClickListener{
-        void onHomeListFragmentClick(int i);
+    // MineListActivity的监听事件接口
+    private MineListActivity.MineListTouchListener mineListTouchListener;
+
+    private int i;
+    private MyListAdapter myListAdapter;
+
+    public interface MyListFragmentClickListener {
+        void onMyListFragmentClick(int i);
     }
 
-    //建立fragment视图
+    /**
+     * 建立fragment视图
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.home_listview, container, false);
     }
 
-    //建立fragment对象,并绑定数据适配器
+    /**
+     * 建立fragment对象,并绑定数据适配器
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        homeListAdapter = new HomeListAdapter(getActivity());
-        this.setListAdapter(homeListAdapter);
+        myListAdapter = new MyListAdapter(getActivity());
+        this.setListAdapter(myListAdapter);
         register();
     }
 
@@ -584,41 +704,76 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
      */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        if(getActivity() instanceof HomeListFragmentClickListener){
-            ((HomeListFragmentClickListener) getActivity()).onHomeListFragmentClick(i);
+        if(getActivity() instanceof MyListFragmentClickListener){
+            ((MyListFragmentClickListener) getActivity()).onMyListFragmentClick(i);
         }
     }
 
     /**
-     *在销毁fragment时取消注册事件
+     * 在销毁fragment时取消注册事件
      */
     @Override
     public void onDetach() {
         super.onDetach();
-        ((HomeActivity)this.getActivity()).unRegisterHomeListener(homeTouchListener);
+
+        if(this.getActivity() instanceof HomeActivity)
+            ((HomeActivity)this.getActivity()).unRegisterHomeListener(homeTouchListener);
+
+        if(this.getActivity() instanceof MineListActivity)
+            ((MineListActivity)this.getActivity()).unRegisterMineListListener(mineListTouchListener);
     }
 
-    /*
-    //获取数据
-    private List<Map<String, Object>> getData(){
-        List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
-        for(int i = 0;i<10;i++){
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("image1", R.drawable.ic_launcher);
-            map.put("text1", "表白"+i);
-            map.put("image2", R.drawable.ic_launcher);
-            map.put("text2", "表白" + i);
-            list.add(map);
-        }
-        return list;
-    }
+    /**
+     * 注册HomeTouchListener()和MineListTouchListener()的接口
+     * 将activity接收的触摸事件分发到这里处理
      */
+    public void register(){
+        if(this.getActivity() instanceof HomeActivity){
+            homeTouchListener = new HomeActivity.HomeTouchListener() {
+                @Override
+                public void onTouchEvent(MotionEvent event) {
+                    if(event.getX() < getScreenWidth(getActivity())/2)
+                        i = 0;
+                    else
+                        i = 1;
 
-    public HomeListAdapter getHomeListAdapter(){
-        return homeListAdapter;
+                    //处理刷新事件
+                    onFreshEvent(event);
+                }
+            };
+
+            ((HomeActivity)this.getActivity()).registerHomeTouchListener(homeTouchListener);
+        }
+
+        if(this.getActivity() instanceof MineListActivity){
+            mineListTouchListener = new MineListActivity.MineListTouchListener() {
+                @Override
+                public void onTouchEvent(MotionEvent event) {
+                    if(event.getX() < getScreenWidth(getActivity())/2)
+                        i = 0;
+                    else
+                        i = 1;
+
+                    //处理刷新事件
+                    onFreshEvent(event);
+                }
+            };
+
+            ((MineListActivity)this.getActivity()).registerMineListTouchListener(mineListTouchListener);
+        }
+
     }
 
-    //获取屏幕的宽度
+    /**
+     * 获取ListAdapter
+     */
+    public MyListAdapter getMyListAdapter(){
+        return myListAdapter;
+    }
+
+    /**
+     * 获取屏幕的宽度
+     */
     private int getScreenWidth(Context context){
         WindowManager windowManager = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
@@ -627,132 +782,14 @@ public class HomeListFragment extends ListFragment implements AbsListView.OnScro
         return displayMetrics.widthPixels;
     }
 
-    public void register(){
-        homeTouchListener = new HomeActivity.HomeTouchListener() {
-            @Override
-            public void onTouchEvent(MotionEvent event) {
-                if(event.getX() < getScreenWidth(getActivity())/2)
-                    i = 0;
-                else
-                    i = 1;
-
-                if(mCanLoadMore && mEndState == ENDINT_LOADING){
-                    // 如果存在加载更多功能，并且当前正在加载更多，默认不允许下拉刷新，必须加载完毕后才能使用。
-                    return;
-                }
-                if (mCanRefresh) {
-                    switch (event.getAction()) {
-
-                        case MotionEvent.ACTION_DOWN:
-                            if (mFirstItemIndex == 0 && !mIsRecored) {
-                                mIsRecored = true;
-                                mStartY = (int) event.getY();
-                            }
-                            break;
-
-                        case MotionEvent.ACTION_UP:
-
-                            if (mHeadState != REFRESHING && mHeadState != LOADING) {
-                                if (mHeadState == DONE) {
-
-                                }
-                                if (mHeadState == PULL_TO_REFRESH) {
-                                    mHeadState = DONE;
-                                    changeHeaderViewByState();
-                                }
-                                if (mHeadState == RELEASE_TO_REFRESH) {
-                                    mHeadState = REFRESHING;
-                                    changeHeaderViewByState();
-                                    onRefresh();
-                                }
-                            }
-
-                            mIsRecored = false;
-                            mIsBack = false;
-
-                            break;
-
-                        case MotionEvent.ACTION_MOVE:
-                            int tempY = (int) event.getY();
-
-                            if (!mIsRecored && mFirstItemIndex == 0) {
-                                mIsRecored = true;
-                                mStartY = tempY;
-                            }
-
-                            if (mHeadState != REFRESHING && mIsRecored && mHeadState != LOADING) {
-
-                                // 保证在设置padding的过程中，当前的位置一直是在head，
-                                // 否则如果当列表超出屏幕的话，当在上推的时候，列表会同时进行滚动
-                                // 可以松手去刷新了
-                                if (mHeadState == RELEASE_TO_REFRESH) {
-
-                                    setSelection(0);
-
-                                    // 往上推了，推到了屏幕足够掩盖head的程度，但是还没有推到全部掩盖的地步
-                                    if (((tempY - mStartY) / RATIO < mHeadViewHeight)
-                                            && (tempY - mStartY) > 0) {
-                                        mHeadState = PULL_TO_REFRESH;
-                                        changeHeaderViewByState();
-                                    }
-                                    // 一下子推到顶了
-                                    else if (tempY - mStartY <= 0) {
-                                        mHeadState = DONE;
-                                        changeHeaderViewByState();
-                                    }
-                                    // 往下拉了，或者还没有上推到屏幕顶部掩盖head的地步
-                                }
-                                // 还没有到达显示松开刷新的时候,DONE或者是PULL_To_REFRESH状态
-                                if (mHeadState == PULL_TO_REFRESH) {
-
-                                    setSelection(0);
-
-                                    // 下拉到可以进入RELEASE_TO_REFRESH的状态
-                                    if ((tempY - mStartY) / RATIO >= mHeadViewHeight) {
-                                        mHeadState = RELEASE_TO_REFRESH;
-                                        mIsBack = true;
-                                        changeHeaderViewByState();
-                                    } else if (tempY - mStartY <= 0) {
-                                        mHeadState = DONE;
-                                        changeHeaderViewByState();
-                                    }
-                                }
-
-                                if (mHeadState == DONE) {
-                                    if (tempY - mStartY > 0) {
-                                        mHeadState = PULL_TO_REFRESH;
-                                        changeHeaderViewByState();
-                                    }
-                                }
-
-                                if (mHeadState == PULL_TO_REFRESH) {
-                                    mHeadView.setPadding(0, -1 * mHeadViewHeight
-                                            + (tempY - mStartY) / RATIO, 0, 0);
-
-                                }
-
-                                if (mHeadState == RELEASE_TO_REFRESH) {
-                                    mHeadView.setPadding(0, (tempY - mStartY) / RATIO
-                                            - mHeadViewHeight, 0, 0);
-                                }
-                            }
-                            break;
-                    }
-                }
-            }
-        };
-        //在该Fragment的构造函数中注册mTouchListener的回调
-        ((HomeActivity)this.getActivity()).registerHomeTouchListener(homeTouchListener);
-    }
-
-    protected static class HomeListAdapter extends BaseAdapter {
+    protected static class MyListAdapter extends BaseAdapter {
 
         private LayoutInflater inflater;
         private Context context;
 
         private DisplayImageOptions options;
 
-        HomeListAdapter(Context context){
+        MyListAdapter(Context context){
             this.context = context;
             inflater = LayoutInflater.from(context);
 

@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.groovemax1.uitest.adapters.CommentAdapter;
@@ -33,7 +34,7 @@ import java.util.Map;
  * Created by GROOVEMAX1 on 2016/1/27.
  * 详细表白
  */
-public class ExpressionDetailActivity extends Activity implements View.OnClickListener{
+public class ExpressionDetailActivity extends Activity{
     private SeekBar seekBar;
     private ImageButton playBtn;
     private Player player;
@@ -50,6 +51,9 @@ public class ExpressionDetailActivity extends Activity implements View.OnClickLi
     private List<Map<String, Object>> list = null;
 
     private EditText editCommEt;
+    private TextView commName;
+    /** 是否是回复评论的标识 */
+    private boolean replyFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +62,6 @@ public class ExpressionDetailActivity extends Activity implements View.OnClickLi
         initUi();
     }
 
-    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.backBtn:
@@ -69,6 +72,15 @@ public class ExpressionDetailActivity extends Activity implements View.OnClickLi
                 break;
             case R.id.likeBtn:
                 break;
+            case R.id.commLayout:
+                /*
+                bug
+                这里默认只能拿到第一个listview
+                 */
+                commName = (TextView) findViewById(R.id.commName);
+                commName.setText("titi");
+                Toast.makeText(this, ""+commName.getText().toString(), Toast.LENGTH_SHORT).show();
+                replyFlag = true;
             case R.id.commentBtn:
             case R.id.shareBtn:
                 showPopupWindow(v);
@@ -98,7 +110,12 @@ public class ExpressionDetailActivity extends Activity implements View.OnClickLi
             case R.id.getCommBtn:
                 message = new Message();
                 message.obj = editCommEt.getText().toString();
-                message.what = 1;
+                if (!replyFlag)
+                    message.what = 1;
+                else{
+                    message.what = 2;
+                    replyFlag = false;
+                }
                 handler.sendMessage(message);
                 popupWindow.dismiss();
                 break;
@@ -140,16 +157,29 @@ public class ExpressionDetailActivity extends Activity implements View.OnClickLi
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 if(msg.what == 0)
-                    Toast.makeText(getApplication(), ""+msg.obj.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ExpressionDetailActivity.this, ""+msg.obj.toString(), Toast.LENGTH_SHORT).show();
                 if(msg.what == 1){
                     Map<String, Object> map = new HashMap<String, Object>();
                     map.put("commImage", R.drawable.ic_launcher);
                     map.put("commName", "Kiki");
+                    map.put("commReplyName", "");
                     map.put("commText", msg.obj.toString());
                     map.put("likeBtn", R.mipmap.expression_comment_like_ib);
-                    map.put("likeNum", "12345");
+                    map.put("likeNum", "0");
                     list.add(map);
-                    commList.setAdapter(new CommentAdapter(getApplication(), list));
+                    commList.setAdapter(new CommentAdapter(ExpressionDetailActivity.this, list));
+                    setListViewHeightBasedOnChildren(commList);
+                }
+                if(msg.what == 2){
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("commImage", R.drawable.ic_launcher);
+                    map.put("commName", "Kiki");
+                    map.put("commReplyName", "toto");
+                    map.put("commText", msg.obj.toString());
+                    map.put("likeBtn", R.mipmap.expression_comment_like_ib);
+                    map.put("likeNum", "0");
+                    list.add(map);
+                    commList.setAdapter(new CommentAdapter(ExpressionDetailActivity.this, list));
                     setListViewHeightBasedOnChildren(commList);
                 }
             }
@@ -193,6 +223,7 @@ public class ExpressionDetailActivity extends Activity implements View.OnClickLi
                 });
                 break;
             case R.id.commentBtn:
+            case R.id.commLayout:
                 content = LayoutInflater.from(this).inflate(R.layout.popupwindow_comment, null);
                 editCommEt = (EditText) content.findViewById(R.id.editCommEt);
                 background = new ColorDrawable(0x01000000);
@@ -228,16 +259,16 @@ public class ExpressionDetailActivity extends Activity implements View.OnClickLi
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("commImage",R.drawable.ic_launcher);
             map.put("commName","Coco");
+            map.put("commReplyName", "");
             map.put("commText","很喜欢这篇文字"+i);
             map.put("likeBtn",R.mipmap.expression_comment_like_ib);
             map.put("likeNum","12345");
             list.add(map);
         }
-
         return list;
     }
 
-    //重新绘制commList
+    //重新绘制commList,保证在scrollview中能正常显示
     private void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {

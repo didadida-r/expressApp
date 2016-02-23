@@ -73,6 +73,7 @@
         android:layout_marginTop="17dp"
         android:background="@color/WHITE"/>
 
+    <!-- bottomLayout -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"

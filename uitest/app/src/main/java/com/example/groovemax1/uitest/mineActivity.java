@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -14,13 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 /**
  * Created by GROOVEMAX1 on 2016/1/27.
  * 我的
  */
 
-public class MineActivity extends Activity implements View.OnClickListener{
+public class MineActivity extends Activity implements View.OnClickListener, ListView.OnItemClickListener{
     private static final int NONE = 0;
     private static final int PHOTO_ZOOM = 2; // 缩放
     private static final int PHOTO_RESULT = 3;// 结果
@@ -43,15 +45,36 @@ public class MineActivity extends Activity implements View.OnClickListener{
         image = (ImageView) findViewById(R.id.image);
         name = (TextView) findViewById(R.id.name);
         mineIv = (ImageView) findViewById(R.id.mineIv);
-        listView = (ListView) findViewById(R.id.myListView);
-        listView.setAdapter(new ArrayAdapter<String>(this, R.layout.mine_listview_sample, R.id.listTextView, content));
         mineIv.setImageResource(R.mipmap.home_mine_selete_iv);
-        onListViewClick();
+
+        listView = (ListView) findViewById(R.id.myListView);
+        listView.setAdapter(new ArrayAdapter<String>(this, R.layout.mine_listview_item, R.id.listTextView, content));
+        listView.setOnItemClickListener(this);
+
     }
 
-    //选中处理
-    private void onListViewClick(){
-
+    //listView选中处理
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent();
+        switch (position){
+            case 0:
+                intent.putExtra("title", "我看过的");
+                break;
+            case 1:
+                intent.putExtra("title", "我评论的");
+                break;
+            case 2:
+                intent.putExtra("title", "我收藏的");
+                break;
+            case 3:
+                intent.putExtra("title", "我发布的");
+                break;
+            default:
+                break;
+        }
+        intent.setClass(MineActivity.this, MineListActivity.class);
+        startActivity(intent);
     }
 
     @Override

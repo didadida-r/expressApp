@@ -1,16 +1,12 @@
 package com.example.groovemax1.uitest;
 
-import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -18,8 +14,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.example.groovemax1.uitest.view.MyDialog;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -36,9 +30,9 @@ import java.util.ArrayList;
  * 主页
  */
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener, HomeListFragment.HomeListFragmentClickListener{
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener, MyListFragment.MyListFragmentClickListener {
 
-    private HomeListFragment homeListFragment;
+    private MyListFragment myListFragment;
     private ImageView homeIv;
 
     private static final String PREFERENCE_NAME = "saveInfo";   //文件名称
@@ -47,33 +41,41 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private static final String USER_CODE = "USER_CODE";
     private static final String LOGIN_STATE = "LOGIN_STATE";
 
-    FragmentManager fragmentManager = getFragmentManager();
-    FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-   // private int mCount = 10;//加载数据条数
     private static final int LOAD_DATA_FINISH = 10;//上拉刷新
     private static final int REFRESH_DATA_FINISH = 11;//下拉刷新
 
     private static final String TAG = "debug";
 
+    /**
+     * 接口：HomeTouchListener
+     * 描述：用于将HomeActivity的监听事件分发给fragment
+     */
     public interface HomeTouchListener{
-        public void onTouchEvent(MotionEvent event);
+        void onTouchEvent(MotionEvent event);
     }
 
-    //保存HomeTouchListener接口的列表
+    /**
+     * 保存HomeTouchListener接口的列表
+     */
     private ArrayList<HomeTouchListener> homeTouchListeners = new ArrayList<HomeActivity.HomeTouchListener>();
 
-    //注册触摸事件
+    /**
+     * 注册触摸事件
+     */
     public void registerHomeTouchListener(HomeTouchListener listener){
         homeTouchListeners.add(listener);
     }
 
-    //取消触摸事件
+    /**
+     * 取消触摸事件
+     */
     public void unRegisterHomeListener(HomeTouchListener listener){
         homeTouchListeners.remove(listener);
     }
 
-    //分发触摸事件到所有注册的接口
+    /**
+     * 分发触摸事件到所有注册的接口
+     */
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         for(HomeTouchListener listener : homeTouchListeners){
@@ -91,7 +93,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         initUi();
     }
 
-    //初始化UI
+    /**
+     * 初始化UI
+     */
     public void initUi(){
 
         setDefaultFragment();
@@ -125,14 +129,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         Constant.IMAGE_URLS.add(f);
     }
 
-    //初始化fragment
+    /**
+     * 初始化fragment,监听下拉刷新和上拉加载
+     */
     private void setDefaultFragment(){
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        homeListFragment = new HomeListFragment();
+        myListFragment = new MyListFragment();
 
         //------------------------------
-        homeListFragment.setOnRefreshListener(new HomeListFragment.OnRefreshListener() {
+        myListFragment.setOnRefreshListener(new MyListFragment.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 // 下拉刷新
@@ -140,7 +146,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 loadData(0);
             }
         });
-        homeListFragment.setOnLoadListener(new HomeListFragment.OnLoadMoreListener() {
+        myListFragment.setOnLoadListener(new MyListFragment.OnLoadMoreListener() {
 
             @Override
             public void onLoadMore() {
@@ -149,18 +155,21 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 loadData(1);
             }
         });
-//        //关闭下拉刷新
-//        homeListFragment.setCanRefresh(!homeListFragment.isCanRefresh());
-//        //关闭上拉刷新
-//        homeListFragment.setCanLoadMore(!homeListFragment.isCanLoadMore());
+        //关闭下拉刷新
+        //myListFragment.setCanRefresh(!myListFragment.isCanRefresh());
+        //关闭上拉刷新
+        //myListFragment.setCanLoadMore(!myListFragment.isCanLoadMore());
         //------------------------------
-        transaction.replace(R.id.homeFrameContain, homeListFragment);
+        transaction.replace(R.id.homeFrameContain, myListFragment);
         transaction.commit();
     }
 
-    //HomeListFragment点击时的回调,跳转到详细表白页面
+    /**
+     * HomeListFragment点击时的回调,跳转到详细表白页面
+     * 主要是用于ListFragment的解耦
+     */
     @Override
-    public void onHomeListFragmentClick(int i) {
+    public void onMyListFragmentClick(int i) {
         if(i == 0)
             Toast.makeText(this, "left", Toast.LENGTH_SHORT).show();
         else
@@ -328,11 +337,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     Constant.IMAGE_URLS.add(f);
 
                     Log.v(TAG, "Constant.IMAGE_URLS" + Constant.IMAGE_URLS);
-                    homeListFragment.onRefreshComplete();	//下拉刷新完成
+                    myListFragment.onRefreshComplete();	//下拉刷新完成
                     //重新加载fragment
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.remove(homeListFragment);
+                    transaction.remove(myListFragment);
                     transaction.commit();
                     setDefaultFragment();
                     break;
@@ -363,10 +372,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     Constant.IMAGE_URLS.add(e1);
                     Constant.IMAGE_URLS.add(f1);
 
-                    homeListFragment.getListView().setVisibility(View.GONE);
-                    homeListFragment.getHomeListAdapter().notifyDataSetChanged();
-                    homeListFragment.getListView().setVisibility(View.VISIBLE);
-                    homeListFragment.onLoadMoreComplete();	//加载更多完成
+                    myListFragment.getListView().setVisibility(View.GONE);
+                    myListFragment.getMyListAdapter().notifyDataSetChanged();
+                    myListFragment.getListView().setVisibility(View.VISIBLE);
+                    myListFragment.onLoadMoreComplete();	//加载更多完成
                     break;
                 default:
                     break;
